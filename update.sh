@@ -17,7 +17,7 @@ for version in "${versions[@]}"; do
 
   REL="$(cat version)"
   ARCH="$(cat arch)"
-  qemu_arch="$(cat qemu_arch || true)"
+  qemu_arch="$(cat qemu || true)"
 
   MIRROR=${MIRROR:-http://dl-cdn.alpinelinux.org/alpine}
   REPO=$MIRROR/$REL/main
@@ -74,8 +74,8 @@ EOF
   fi
 
   # build
-  docker build -t "${repo}:${ARCH}-${REL}" .
-  docker run --rm "${repo}:${ARCH}-${REL}" /bin/sh -ec "echo Hello from Alpine !; set -x; uname -a; cat /etc/alpine-release"
+  docker build -t "${repo}:${REL}-${ARCH}" .
+  docker run --rm "${repo}:${REL}-${ARCH}" /bin/sh -ec "echo Hello from Alpine !; set -x; uname -a; cat /etc/alpine-release"
 
   # FIXME: tag latest
   )
