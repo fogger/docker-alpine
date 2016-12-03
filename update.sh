@@ -9,7 +9,7 @@ if [ ${#versions[@]} -eq 0 ]; then
 fi
 versions=( "${versions[@]%/}" )
 
-repo="lafin/alpine"
+repo="fogger/alpine"
 
 for version in "${versions[@]}"; do
   (
