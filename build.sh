@@ -13,6 +13,9 @@ MIRROR=${MIRROR:-http://dl-cdn.alpinelinux.org/alpine}
 BUILD=.build
 mkdir -p $BUILD
 
+curl -o $BUILD/manifest http://install.fogger.io/manifest/manifest_linux_amd64
+chmod 755 $BUILD/manifest
+
 docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 
 for VERSION in "${VERSIONS[@]}"; do
@@ -102,6 +105,6 @@ EOF
       )
     done
 
-    cat $BUILD/$VERSION.yml
+    $BUILD/manifest pushml $BUILD/$VERSION.yml
   )
 done
