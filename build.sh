@@ -11,6 +11,7 @@ IMAGE="fogger/alpine"
 MIRROR=${MIRROR:-http://dl-cdn.alpinelinux.org/alpine}
 
 BUILD=.build
+mkdir -p $BUILD
 
 for VERSION in "${VERSIONS[@]}"; do
   (
