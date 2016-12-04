@@ -8,5 +8,3 @@ install:
 
 script:
   - sudo bash -x build.sh
-  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker push fogger/alpine

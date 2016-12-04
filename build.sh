@@ -13,6 +13,8 @@ MIRROR=${MIRROR:-http://dl-cdn.alpinelinux.org/alpine}
 BUILD=.build
 mkdir -p $BUILD
 
+docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+
 for VERSION in "${VERSIONS[@]}"; do
   (
 
@@ -87,7 +89,8 @@ EOF
           # build
           docker build -t "${IMAGE}:${VERSION}-${ARCH_TAG}" $LOCAL
           docker run --rm "${IMAGE}:${VERSION}-${ARCH_TAG}" /bin/sh -ec "echo Hello from Alpine !; set -x; uname -a; cat /etc/alpine-release"
-          
+          docker push "${IMAGE}:${VERSION}-${ARCH_TAG}"
+
           cat >> $BUILD/$VERSION.yml <<EOF
   -
     image: ${IMAGE}:${VERSION}-${ARCH_TAG}
