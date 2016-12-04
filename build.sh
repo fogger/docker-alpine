@@ -12,7 +12,7 @@ MIRROR=${MIRROR:-http://dl-cdn.alpinelinux.org/alpine}
 
 BUILD=.build
 MANIFESTS=$BUILD/manifests
-mkdir -p MANIFESTS
+mkdir -p $MANIFESTS
 
 curl -o $BUILD/manifest http://install.fogger.io/manifest/manifest_linux_amd64
 chmod 755 $BUILD/manifest
