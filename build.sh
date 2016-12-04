@@ -14,6 +14,11 @@ BUILD=.build
 
 for VERSION in "${VERSIONS[@]}"; do
   (
+
+    cat > $BUILD/$VERSION.yml <<EOF
+image: ${IMAGE}:${VERSION}
+manifests:
+EOF
     
     for i in "${ARCHS[@]}"; do
       (
@@ -81,8 +86,18 @@ EOF
           # build
           docker build -t "${IMAGE}:${VERSION}-${ARCH_TAG}" $LOCAL
           docker run --rm "${IMAGE}:${VERSION}-${ARCH_TAG}" /bin/sh -ec "echo Hello from Alpine !; set -x; uname -a; cat /etc/alpine-release"
+          
+          cat >> $BUILD/$VERSION.yml <<EOF
+  -
+    image: ${IMAGE}:${VERSION}
+    platform:
+      architecture: ${ARCH_TAG}
+      os: linux
+EOF
+
       )
     done
 
+    cat $BUILD/$VERSION.yml
   )
 done
