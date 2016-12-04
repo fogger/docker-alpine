@@ -11,17 +11,16 @@ IMAGE="fogger/alpine"
 MIRROR=${MIRROR:-http://dl-cdn.alpinelinux.org/alpine}
 
 BUILD=.build
-mkdir -p $BUILD
+MANIFESTS=$BUILD/manifests
+mkdir -p MANIFESTS
 
 curl -o $BUILD/manifest http://install.fogger.io/manifest/manifest_linux_amd64
 chmod 755 $BUILD/manifest
 
-docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-
 for VERSION in "${VERSIONS[@]}"; do
   (
 
-    cat > $BUILD/$VERSION.yml <<EOF
+    cat > $MANIFESTS/$VERSION.yml <<EOF
 image: ${IMAGE}:${VERSION}
 manifests:
 EOF
@@ -92,9 +91,8 @@ EOF
           # build
           docker build -t "${IMAGE}:${VERSION}-${ARCH_TAG}" $LOCAL
           docker run --rm "${IMAGE}:${VERSION}-${ARCH_TAG}" /bin/sh -ec "echo Hello from Alpine !; set -x; uname -a; cat /etc/alpine-release"
-          docker push "${IMAGE}:${VERSION}-${ARCH_TAG}"
 
-          cat >> $BUILD/$VERSION.yml <<EOF
+          cat >> $MANIFESTS/$VERSION.yml <<EOF
   -
     image: ${IMAGE}:${VERSION}-${ARCH_TAG}
     platform:
@@ -104,7 +102,18 @@ EOF
 
       )
     done
-
-    $BUILD/manifest pushml $BUILD/$VERSION.yml
   )
 done
+
+# push to docker registry 
+docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+docker push "${IMAGE}"
+
+# push manifest files
+FILES=( $MANIFESTS )
+for f in "${FILES[@]}"; do
+  (
+    $BUILD/manifest pushml $f
+  )
+done
+
