@@ -5,7 +5,7 @@ VERSIONS=("edge")
 
 # supported architectures map 
 # "APK_ARCH; QEMU_ARCH; TAG_ARCH"
-ARCHS=("x86;i386;386" "x86_64;x86_64;amd64" "armhf;arm;arm" "aarch64;aarch64;arm64")
+ARCHS=("x86_64;x86_64;amd64" "armhf;arm;arm" "aarch64;aarch64;arm64")
 
 IMAGE="fogger/alpine"
 MIRROR=${MIRROR:-http://dl-cdn.alpinelinux.org/alpine}
