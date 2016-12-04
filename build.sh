@@ -109,6 +109,8 @@ done
 docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 docker push "${IMAGE}"
 
+ls $MANIFESTS
+
 # push manifest files
 FILES=( $MANIFESTS )
 for f in "${FILES[@]}"; do
