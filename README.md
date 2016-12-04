@@ -1,6 +1,6 @@
 # Fogger - Alpine images with qemu
 [![Project Fogger](https://img.shields.io/badge/project-fogger-78a300.svg)](http://fogger.io)
-[![License](https://img.shields.io/badge/license-MIT.0-78a300.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-78a300.svg)](LICENSE)
 [![Docker pulls](https://img.shields.io/docker/pulls/fogger/alpine.svg?label=docker)](https://hub.docker.com/r/fogger/alpine)
 
 ## Usage
