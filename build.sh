@@ -90,7 +90,7 @@ EOF
           
           cat >> $BUILD/$VERSION.yml <<EOF
   -
-    image: ${IMAGE}:${VERSION}
+    image: ${IMAGE}:${VERSION}-${ARCH_TAG}
     platform:
       architecture: ${ARCH_TAG}
       os: linux
