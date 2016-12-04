@@ -39,8 +39,6 @@ for VERSION in "${VERSIONS[@]}"; do
             curl -sSL $REPO/$ARCH_APK/apk-tools-static-${apkv}.apk | tar -xz -C $TMP sbin/apk.static
         fi
 
-        # FIXME: register binfmt
-
         # install qemu-user-static
         if [ -n "${ARCH_QEMU}" ]; then
           if [ ! -f $QEMU/x86_64_qemu-${ARCH_QEMU}-static.tar.gz ]; then
@@ -83,9 +81,6 @@ EOF
           # build
           docker build -t "${IMAGE}:${VERSION}-${ARCH_TAG}" $LOCAL
           docker run --rm "${IMAGE}:${VERSION}-${ARCH_TAG}" /bin/sh -ec "echo Hello from Alpine !; set -x; uname -a; cat /etc/alpine-release"
-
-          # FIXME: tag latest
-
       )
     done
 

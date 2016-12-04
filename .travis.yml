@@ -7,6 +7,6 @@ install:
   - sudo apt-get -y install debootstrap qemu-user-static
 
 script:
-  - sudo bash -x update.sh
+  - sudo bash -x build.sh
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push fogger/alpine
