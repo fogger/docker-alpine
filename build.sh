@@ -112,7 +112,7 @@ docker push "${IMAGE}"
 ls $MANIFESTS
 
 # push manifest files
-FILES=( $MANIFESTS )
+FILES=($MANIFESTS/*)
 for f in "${FILES[@]}"; do
   (
     $BUILD/manifest pushml $f
