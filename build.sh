@@ -14,7 +14,7 @@ BUILD=.build
 MANIFESTS=$BUILD/manifests
 mkdir -p $MANIFESTS
 
-curl -o $BUILD/manifest http://install.fogger.io/manifest/manifest_linux_amd64
+curl -o $BUILD/manifest -L https://github.com/fogger/go-builders/releases/download/0.5/manifest-tool_linux_amd64
 chmod 755 $BUILD/manifest
 
 for VERSION in "${VERSIONS[@]}"; do
