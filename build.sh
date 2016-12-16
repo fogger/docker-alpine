@@ -75,6 +75,7 @@ EOF
         cat > $LOCAL/Dockerfile <<EOF
 FROM scratch
 ADD rootfs.tar.gz /
+RUN apk update && apk add ca-certificates
 
 EOF
 #ENV ARCH=${ARCH} ALPINE_REL=${REL} DOCKER_REPO=${repo} ALPINE_MIRROR=${MIRROR}
