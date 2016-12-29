@@ -14,7 +14,7 @@ BUILD=.build
 MANIFESTS=$BUILD/manifests
 mkdir -p $MANIFESTS
 
-curl -o $BUILD/manifest -L https://github.com/elrot/manifest/raw/master/manifest_darwin_amd64
+curl -o $BUILD/manifest -L https://github.com/elrot/manifest/raw/master/manifest_linux_amd64
 chmod 755 $BUILD/manifest
 
 for VERSION in "${VERSIONS[@]}"; do
