@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSIONS=("v3.5")
+VERSIONS=("edge")
 
 # supported architectures map 
 # "APK_ARCH; QEMU_ARCH; TAG_ARCH"
