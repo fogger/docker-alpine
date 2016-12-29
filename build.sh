@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSIONS=("edge")
+VERSIONS=("3.5", "edge")
 
 # supported architectures map 
 # "APK_ARCH; QEMU_ARCH; TAG_ARCH"
@@ -14,7 +14,7 @@ BUILD=.build
 MANIFESTS=$BUILD/manifests
 mkdir -p $MANIFESTS
 
-curl -o $BUILD/manifest -L https://github.com/fogger/go-builders/releases/download/0.5/manifest-tool_linux_amd64
+curl -o $BUILD/manifest -L https://github.com/elrot/manifest/raw/master/manifest_darwin_amd64
 chmod 755 $BUILD/manifest
 
 for VERSION in "${VERSIONS[@]}"; do
@@ -74,8 +74,7 @@ EOF
         # create Dockerfile
         cat > $LOCAL/Dockerfile <<EOF
 FROM scratch
-ADD rootfs.tar.gz /
-RUN apk update && apk add ca-certificates
+ADD rootfs.tar.gz 
 
 EOF
 #ENV ARCH=${ARCH} ALPINE_REL=${REL} DOCKER_REPO=${repo} ALPINE_MIRROR=${MIRROR}
