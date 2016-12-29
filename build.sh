@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VERSIONS=("edge")
+VERSIONS=("v3.5")
 
 # supported architectures map 
 # "APK_ARCH; QEMU_ARCH; TAG_ARCH"
@@ -81,7 +81,7 @@ EOF
 
         # add qemu-user-static binary
         if [ -n "${QEMU_ARCH}" ]; then
-          cat >> Dockerfile <<EOF
+          cat >> $LOCAL/Dockerfile <<EOF
 
 # Add qemu-user-static binary for amd64 builders
 ADD x86_64_qemu-${QEMU_ARCH}-static.tar.gz /usr/bin
