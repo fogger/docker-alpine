@@ -74,7 +74,7 @@ EOF
         # create Dockerfile
         cat > $LOCAL/Dockerfile <<EOF
 FROM scratch
-ADD rootfs.tar.gz 
+ADD rootfs.tar.gz /
 
 EOF
 #ENV ARCH=${ARCH} ALPINE_REL=${REL} DOCKER_REPO=${repo} ALPINE_MIRROR=${MIRROR}
