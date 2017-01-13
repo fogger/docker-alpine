@@ -7,4 +7,9 @@ install:
   - sudo apt-get -y install debootstrap qemu-user-static
 
 script:
-  - sudo bash -x build.sh
+  - > 
+    docker run --rm --privileged 
+      -v $(pwd):/src 
+      -e DOCKER_USERNAME=$DOCKER_USERNAME 
+      -e DOCKER_PASSWORD=$DOCKER_PASSWORD 
+    fogger/image fogger-image build .
