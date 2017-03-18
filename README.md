@@ -1,13 +1,20 @@
-# A minimal, multiarch Docker image based on Alpine Linux with Qemu
+# Fogger - Alpine images with qemu
 [![Project Fogger](https://img.shields.io/badge/project-fogger-78a300.svg)](http://fogger.io)
 [![License](https://img.shields.io/badge/license-MIT-78a300.svg)](LICENSE)
 [![Docker pulls](https://img.shields.io/docker/pulls/fogger/alpine.svg?label=docker)](https://hub.docker.com/r/fogger/alpine)
 
-## Usage
+A super small Docker image based on Alpine Linux. The image is only 5 MB and has access to a package repository that is much more complete than other BusyBox based images.
 
-Run an `arm` image from your `amd64` host.
+# What is Fogger?
+[Fogger](https://fogger.io) is an open source [Fog Computing](https://en.wikipedia.org/wiki/Fog_computing) engine used to build private edge datacanter over heterogenous hardware. 
 
-```
-$ docker run -it --rm fogger/alpine:edge-arm uname -a
-Linux bcef08c0b93d 4.4.19-moby #1 SMP Mon Aug 22 23:30:19 UTC 2016 armv7l Linux
-```
+This repo is a part of [fogger/image](https://github.com/fogger/image) - multiarch, multilanguage build project. 
+
+*[fogger/image](https://github.com/fogger/image) generates images that contains [manifest lists](https://docs.docker.com/registry/spec/manifest-v2-2/#manifest-list) of multi-architecture images!*
+
+# What is Alpine Linux?
+[Alpine Linux](http://alpinelinux.org/) is a Linux distribution built around [musl libc](http://www.musl-libc.org/) and [BusyBox](http://www.busybox.net/). The image is only 5 MB in size and has access to a [package repository](http://forum.alpinelinux.org/packages) that is much more complete than other BusyBox based images. This makes Alpine Linux a great image base for utilities and even production applications. [Read more about Alpine Linux here](https://www.alpinelinux.org/about/) and you can see how their mantra fits in right at home with Docker images.
+
+# What is QEMU ?
+[QEMU](http://qemu.org) is a generic and open source machine emulator that do emulation in a "transparent" fashion, allowing execution of non-native target executables just like native ones.
+Try `docker run -it --rm fogger/alpine:edge-arm64 uname -m` to get the machine (hardware) type. And you will obtain `aarch64`. All images contain `/usr/bin/qemu-{{arch}}-static` file that can be easily removed if needed. 
