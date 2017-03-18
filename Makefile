@@ -1,8 +1,9 @@
-.PHONY: default
-default: build ;
+default: build;
 
-.PHONY: build
-build:
+guard-%:
+	@ if [ "${${*}}" = "" ]; then echo "env $* not set"; exit 1; fi
+
+build: guard-DOCKER_USERNAME guard-DOCKER_PASSWORD
 	docker run --rm --privileged \
 		-v $(shell pwd):/src \
 		-e DOCKER_USERNAME="$(DOCKER_USERNAME)" \
