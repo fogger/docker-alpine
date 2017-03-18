@@ -7,17 +7,19 @@ archs:
 
 args:
   version: "edge"
+  tag: "edge"
   mirror: "http://dl-cdn.alpinelinux.org/alpine"
   apk_arch: 
     arm: "armhf"
     arm64: "aarch64"
     amd64: "x86_64"
+  qemu_version: "2.8.1"
   qemu_arch: 
     arm: "arm"
     arm64: "aarch64"
     amd64: "x86_64"  
 
-image: "fogger/alpine:{{.args.version}}"
+image: "fogger/alpine:{{.args.tag}}"
 
 build: 
   image: "{{.image}}-{{.arch}}"
@@ -26,7 +28,7 @@ build:
       mkdir -p rootfs/usr/bin apk/sbin
       apkv=$(curl -sSL {{.args.mirror}}/{{.args.version}}/main/{{.args.apk_arch}}/APKINDEX.tar.gz | tar -Oxz | strings | grep '^P:apk-tools-static$' -A1 | tail -n1 | cut -d: -f2)
       curl -sSL {{.args.mirror}}/{{.args.version}}/main/{{.args.apk_arch}}/apk-tools-static-${apkv}.apk | tar -xz -C apk sbin/apk.static
-      wget https://github.com/multiarch/qemu-user-static/releases/download/v2.6.0/x86_64_qemu-{{.args.qemu_arch}}-static.tar.gz
+      wget https://github.com/multiarch/qemu-user-static/releases/download/v{{.args.qemu_version}}/x86_64_qemu-{{.args.qemu_arch}}-static.tar.gz
       tar -xzvf x86_64_qemu-{{.args.qemu_arch}}-static.tar.gz -C rootfs/usr/bin/
       apk/sbin/apk.static -X {{.args.mirror}}/{{.args.version}}/main -U --allow-untrusted -p rootfs --initdb add alpine-base
       printf '%s\n' {{.args.mirror}}/{{.args.version}}/main > rootfs/etc/apk/repositories
