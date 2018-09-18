@@ -72,7 +72,7 @@ push(){
 
 			for image_file in $image_files; do
 				source "$image_file"
-				options=()
+				declare -a options
 
 				if [[ ! -z "${DOCKER_OS}" ]]; then
 					options+=("--os $DOCKER_OS")
@@ -87,6 +87,8 @@ push(){
 				fi
 
 				docker manifest annotate ${options[@]} $tag $IMAGE_TAG
+
+				unset options
 			done
 
 			docker manifest push $tag
