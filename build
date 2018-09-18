@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+
+shopt -s globstar
+
+root_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
+image_pull() {
+	local pull_url file dir
+    pull_url="$1"
+	dir="$2"
+	file="${pull_url##*/}"
+
+	echo "Pulling $pull_url"
+	curl -fSsL "$pull_url" > "$dir/rootfs.tar.gz"
+}
+
+build() {
+	build_dir="${root_dir}/.build"
+	rm -rf ${build_dir}
+	mkdir ${build_dir}
+
+	declare manifest_files="${*:-versions/**/manifest}"
+
+	for manifest_file in $manifest_files; do
+		local version_dir
+		version_dir="${manifest_file%/*}"
+		declare image_files="${*:-$version_dir/image*}"
+
+		version="$(basename ${version_dir})"
+	
+		for image_file in $image_files; do
+			extension="${image_file##*.}"
+			build_image_dir="${build_dir}/${version}/${extension}"
+			mkdir -p $build_image_dir
+			
+			source "$manifest_file"
+			source "$image_file"
+
+			cp "$version_dir/Dockerfile" "$build_image_dir"
+			image_pull "$ALPINE_PULL_URL" "$build_image_dir"
+
+			docker build -t "$IMAGE_TAG" "$build_image_dir"
+		done
+	done
+}
+
+push(){
+
+	declare manifest_files="${*:-versions/**/manifest}"
+
+	for manifest_file in $manifest_files; do
+		local version_dir
+		version_dir="${manifest_file%/*}"
+		
+		declare image_files="${*:-$version_dir/image*}"
+		declare -a tags
+
+		source "$manifest_file"
+
+		for image_file in $image_files; do
+			source "$image_file"
+			local tag
+			tag="${IMAGE_TAG}"	
+			tags+=("$tag")
+
+			docker push $tag
+		done
+
+		for tag in "${MANIFEST_TAGS[@]}"; do
+
+			docker manifest create $tag ${tags[@]}
+
+			for image_file in $image_files; do
+				source "$image_file"
+				options=()
+
+				if [[ ! -z "${DOCKER_OS}" ]]; then
+					options+=("--os $DOCKER_OS")
+				fi
+				
+				if [[ ! -z "${DOCKER_ARCH}" ]]; then
+					options+=("--arch $DOCKER_ARCH")
+				fi
+
+				if [[ ! -z "${DOCKER_VARIANT}" ]]; then
+					options+=("--variant $DOCKER_VARIANT")
+				fi
+
+				docker manifest annotate ${options[@]} $tag $IMAGE_TAG
+			done
+
+			docker manifest push $tag
+		done
+
+		unset tags
+	done
+}
+
+main() {
+	set -eo pipefail; [[ "$TRACE" ]] && set -x
+	declare cmd="$1"
+	case "$cmd" in
+		push)	shift;	push "$@";;
+		*)		build "$@";;
+	esac
+}
+
+main "$@"

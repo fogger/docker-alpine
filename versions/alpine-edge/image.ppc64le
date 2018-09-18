@@ -1,0 +1,6 @@
+export ALPINE_ARCH="ppc64le"
+export ALPINE_PULL_URL="http://dl-cdn.alpinelinux.org/alpine/edge/releases/${ALPINE_ARCH}/alpine-minirootfs-${ALPINE_VERSION}-${ALPINE_ARCH}.tar.gz"
+export DOCKER_OS="linux"
+export DOCKER_ARCH="ppc64le"
+export DOCKER_VARIANT=""
+export IMAGE_TAG=fogger/alpine:edge-${DOCKER_ARCH}${DOCKER_VARIANT}
